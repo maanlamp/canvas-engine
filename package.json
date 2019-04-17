@@ -1,0 +1,18 @@
+{
+  "name": "canvas-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.js",
+  "dependencies": {
+    "firstline": "^2.0.2",
+    "insert-line": "^1.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+		"build:strictmode": "node --no-warnings ./build-scripts/strictmode.js ./modules/",
+		"build": "npm run build:strictmode"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
