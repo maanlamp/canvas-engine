@@ -5,9 +5,10 @@
 export default [
 	{
 		combo: "ctrl+r",
+		type: "keydown",
 		do (event) {
-			event.preventDefault();
-			window.location.reload(true);
+			console.log("hey");
+			// window.location.reload(true);
 		}
 	}
 ];

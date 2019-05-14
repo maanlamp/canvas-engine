@@ -5,12 +5,13 @@
   "main": "game.js",
   "dependencies": {
     "firstline": "^2.0.2",
-    "insert-line": "^1.1.0"
+    "insert-line": "^1.1.0",
+    "prototype-extensions": "github:maanlamp/prototype-extensions"
   },
   "devDependencies": {},
   "scripts": {
-		"build:strictmode": "node --no-warnings ./build-scripts/strictmode.js ./modules/",
-		"build": "npm run build:strictmode"
+    "build:strictmode": "node --no-warnings ./build-scripts/strictmode.js ./modules/",
+    "build": "npm run build:strictmode"
   },
   "keywords": [],
   "author": "",

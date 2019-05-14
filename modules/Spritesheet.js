@@ -1,6 +1,7 @@
 "use strict";
 import Canvas from "./Canvas.js";
 import assert from "./Assert.js";
+import Types from "./Types.js";
 
 export default class Spritesheet {
 	constructor () {
@@ -15,7 +16,7 @@ export default class Spritesheet {
 	get height () {return this.__height;}
 
 	resize (w, h = w) {
-		if (typeof w !== "number") return this.resizeTo(w);
+		if (typeof w !== Types.Number) return this.resizeTo(w);
 
 		this.__width = w;
 		this.__height = h;
@@ -24,8 +25,8 @@ export default class Spritesheet {
 	}
 
 	resizeTo (target) {
-		assert(typeof target.width === "number")
-			.or(typeof target.height === "number")
+		assert(typeof target.width === Types.Number)
+			.or(typeof target.height === Types.Number)
 			.error(`Expected property width/height of type 'number', but got [${typeof target} ${(target.constructor||{}).name||"null"}].`);
 
 		const {width, height = width} = target;

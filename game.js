@@ -1,78 +1,26 @@
 "use strict";
 
-import { loadImage, loadJSON } from "./modules/Load.js";
-import { fpsFromDeltatime } from "./modules/Frames.js";
-import ResetableTimeout from "./modules/ResetableTimeout.js";
-import Canvas from "./modules/Canvas.js";
 import Game from "./modules/Game.js";
-import keybinds from "./data/keybinds.js";
-import Spritesheet from "./modules/Spritesheet.js";
-import assert from "./modules/Assert.js";
+import Ticker from "./modules/plugins/Ticker.js";
+import Keybinds from "./modules/plugins/Keybinds.js";
+import keybindData from "./data/keybinds.js";
+import Renderer from "./modules/plugins/Renderer.js";
 
 const game = new Game();
 console.log(game);
 window.game = game;
 
-void function createMainView () {
-	const canvas = new Canvas(window);
-	const resizeTimeout = new ResetableTimeout({
-		timeout: 200,
-		handler () {canvas.resize(window)}
-	});
-
-	document.body.appendChild(canvas.element);
-	window.addEventListener("resize", () => resizeTimeout.reset());
-
-	return game
-		.bindkeys(keybinds)
-		.set("viewport", canvas)
-		.set("views", new Array())
-		.set("entities", new Array())
-		.set("spritesheet", new Spritesheet())
-		.add("views", game.get("viewport"))
-		.enter("viewport")
-			.clear()
+void function main () {
+	game
+		.plugin(Keybinds, keybinds => keybinds
+			.add(keybindData))
+		.plugin(Renderer, renderer => renderer.viewport
 			.style(`
 				font: 13px "Fira Code";
-				fill: black;
-				image-smoothing: true high;`)
-			.exit();
+				fill: #B3FF1C;
+				anti-aliasing: true high;`))
+		.plugin(Ticker, ticker => ticker
+			.add(() => void game.get("Renderer").viewport //INVESTIGATE WHY THIS USES SO MUCH MEMORY, MAYBE ITS JUST THE INTERNALS?
+				.clear("black")
+				.text(ticker.tps() + " ticks/s, deltatime: " + ticker.deltatime(), 6, 18)));
 }();
-
-// void function tick (game) {
-// 	const deltaTime = game.deltaTime();
-
-// 	game
-// 		.enter("viewport")
-// 			.clear(6, 8, 15, 12)
-// 			.text(fpsFromDeltatime(deltaTime), 6, 18)
-// 			.drawImage(game.get("spritesheet").canvas.element, 50, 50);
-
-// 	return requestAnimationFrame(timestamp => {
-// 		game.update(timestamp);
-// 		tick(game)});
-// }(game);
-
-game
-	.enter("spritesheet")
-		.canvas
-		.style(`fill: red`)
-		.fillRect();
-
-game
-	.enter("viewport")
-	.drawImage(game.get("spritesheet").canvas.element);
-
-// game.__USERDATA.viewport.__CTX.drawImage(game.__USERDATA.spritesheet.canvas.element, 0, 0)
-
-// void function delegateRenderingOffscreen () {
-// 	const renderThread = new Worker("modules/Worker.js");
-// 	const offscreenCanvas = document
-// 		.querySelector("canvas")
-// 		.transferControlToOffscreen();
-
-// 	renderThread.postMessage({
-// 		message: "init",
-// 		canvas: offscreenCanvas
-// 	}, [offscreenCanvas]);
-// }();

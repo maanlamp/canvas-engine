@@ -11,7 +11,7 @@ function parseTemplateLiteral (string, ...placeholders) {
 		.trim();
 }
 
-export default function err (str, placeholders, skip = 4) {
+export default function err (str, placeholders, skip = 3) {
 	const raw = parseTemplateLiteral(str, placeholders);
 	const error = new Error(raw);
 	const stack = error.stack
